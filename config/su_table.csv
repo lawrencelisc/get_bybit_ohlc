@@ -1,0 +1,6 @@
+name,symbol,endpt_col,strat,mode,short_rol,long_rol,rol,thres,num_std,exit_thres,confirm_bars,min_hold,cooldown,url
+0A_market_price_usd_ohlc,BTC,,,,,,,,,,,,,
+0B_market_price_usd_ohlc,ETH,,,,,,,,,,,,,
+0C_market_price_usd_ohlc,SOL,,,,,,,,,,,,,
+0D_market_price_usd_ohlc,BNB,,,,,,,,,,,,,
+0E_market_price_usd_ohlc,SUI,,,,,,,,,,,,,
