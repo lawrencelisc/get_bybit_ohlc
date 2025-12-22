@@ -1,0 +1,19 @@
+algo_1m_btc:
+  BTC_1M_API_KEY: 69A00KXbJ2ILIlSseB
+  BTC_1M_SECRET_KEY: 5fqhtEtRCbHh6ONXpUOoRFm2YjlPzgLOLUZg
+
+algo_1m_eth:
+  ETH_1M_API_KEY: kug36XRFjrqcvzhfGq
+  ETH_1M_SECRET_KEY: Lzzbk1CwNf73iv5sbNMMgVIH8yCvqG0yNVNz
+
+algo_1m_sol:
+  SOL_1M_API_KEY: lw1rq2gRaWOIvMFKis
+  SOL_1M_SECRET_KEY: nT75FZuB61ExmtvDrOThEoWOx7JljylWNPsa
+
+algo_1m_bnb:
+  BNB_1M_API_KEY: zNn4sr3cEf1rpHEuSc
+  BNB_1M_SECRET_KEY: cVAApfY6PF8CMc74uEr3mVeSLpZWOM50nhbi
+
+algo_1m_sui:
+  SUI_1M_API_KEY: 5GcIZGOfVgAJmkpgZk
+  SUI_1M_SECRET_KEY: zWZObIjZEzd96UnUfSBEKAqrHZQTEhjrBGkN
