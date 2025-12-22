@@ -3,8 +3,8 @@ Description=algoB0_get_bybit
 
 [Service]
 Type=simple
-WorkingDirectory=/usr/local/app/algo_get_bybit
-ExecStart=/usr/local/app/algo_get_bybit/venv/bin/python3.12 main.py
+WorkingDirectory=/usr/local/app/get_bybit_ohlc
+ExecStart=/usr/local/app/get_bybit_ohlc/venv/bin/python3.12 main.py
 StandardOutput=syslog
 Restart=always
 RestartSec=2
