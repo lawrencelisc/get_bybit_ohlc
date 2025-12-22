@@ -7,3 +7,4 @@ loguru
 facade
 pyyaml
 schedule
+pyarrow

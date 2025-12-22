@@ -17,7 +17,6 @@ from core.orchestrator import DataSourceConfig
 from ccxt.base.exchange import Exchange
 
 
-
 class DataCenterSrv:
     warnings.filterwarnings("ignore", category=FutureWarning, module="pandas")
     dict_output_key = 'o'
@@ -119,39 +118,41 @@ class DataCenterSrv:
 
             name: str = str(row['name'])
             symbol: str = str(row['symbol'])
-            filename: str = f'{name}_{symbol}.csv'
+            filename: str = f'{name}_{symbol}.parquet'
             file_path = self.data_folder_bybit / filename
 
             # Determine fetch_since based on existing file
             if not file_path.exists():
                 # Fresh to full download
                 df_bybit = self.get_bybite_data(unix_since, symbol, res)
+                df_bybit = df_bybit.reset_index()
                 existing_df = df_bybit.copy()
                 try:
-                    df_bybit.to_csv(file_path)
+                    df_bybit.to_parquet(file_path)
                     logger.info(f'Created file with {len(df_bybit)} rows for {symbol}: {filename}')
                 except Exception as e:
-                    logger.error(f'Failed to save CSV for {symbol}: {e}')
+                    logger.error(f'Failed to save parquet for {symbol}: {e}')
             else:
                 # Update existing file
                 try:
-                    existing_df = pd.read_csv(file_path, index_col=0)
+                    existing_df = pd.read_parquet(file_path)
                 except Exception as e:
-                    logger.error(f'Failed to read existing CSV {filename}: {e}')
+                    logger.error(f'Failed to read existing parquet {filename}: {e}')
                     existing_df = pd.DataFrame()
 
                 # if find existing_df exists but empty, treat as fresh
                 if existing_df.empty:
                     df_bybit = self.get_bybite_data(unix_since, symbol, res)
+                    df_bybit = df_bybit.reset_index()
                     existing_df = df_bybit.copy()
                     try:
-                        df_bybit.to_csv(file_path)
+                        df_bybit.to_parquet(file_path)
                         logger.info(f'Created file with {len(df_bybit)} rows for {symbol}: {filename}')
                     except Exception as e:
-                        logger.error(f'Failed to save CSV for {symbol}: {e}')
+                        logger.error(f'Failed to save parquet for {symbol}: {e}')
 
             existing_df = existing_df.sort_index()
-            latest_ts = existing_df.index[-1]
+            latest_ts = existing_df['date'].iloc[-1]
             unix_latest_ts = int(pd.to_datetime(latest_ts).timestamp())
             unix_diff = int(unix_until - unix_latest_ts)
 
@@ -160,18 +161,19 @@ class DataCenterSrv:
 
             if (unix_diff > 60):
                 df_bybit_new = self.get_bybite_data(unix_latest_ts, symbol, res)
+                df_bybit_new = df_bybit_new.reset_index()
 
                 combine_bybit_df = pd.concat(
-                    [existing_df.dropna(how='all', axis=1),
-                     df_bybit_new.iloc[1:].dropna(how='all', axis=1)],
+                    [existing_df.iloc[:-1].dropna(how='all', axis=1),
+                     df_bybit_new.dropna(how='all', axis=1)],
                     axis=0
-                )
+                ).reset_index(drop=True)
 
                 try:
-                    combine_bybit_df.to_csv(file_path)
-                    logger.info(f'Update file with {len(df_bybit_new) - 1} rows for {symbol}: {filename}')
+                    combine_bybit_df.to_parquet(file_path)
+                    logger.info(f'Update file with {len(df_bybit_new) - 1} row(s) for {symbol}: {filename}')
                 except Exception as e:
-                    logger.error(f'Failed to save CSV for {symbol}: {e}')
+                    logger.error(f'Failed to save parquet for {symbol}: {e}')
 
         gc.collect
         return
