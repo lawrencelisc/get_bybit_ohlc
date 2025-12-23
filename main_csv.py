@@ -8,7 +8,6 @@ from core.datacenter import DataCenterSrv
 
 
 def scheduler(bet_size):
-    time.sleep(15)
     utc_now = dt.datetime.now(dt.UTC)
     logger.info('Starting algo_seq at (UTC) {}', utc_now.strftime('%Y-%m-%d %H:%M:%S'))
 
@@ -20,7 +19,7 @@ def scheduler(bet_size):
 
     # 2. Build request / data frame
     dcs = DataCenterSrv(strat_df)
-    dcs.create_df()
+    dcs.create_df_csv()
     logger.info('Do data cleaning and update data complete')
 
 
@@ -29,7 +28,7 @@ if __name__ == '__main__':
 
     logger.info('Starting unified scheduler + algo program')
 
-    schedule.every().hour.at(':00').do(scheduler, BET_SIZE)
+    schedule.every().minute.at(':10').do(scheduler, BET_SIZE)
 
     try:
         while True:
