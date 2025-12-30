@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     logger.info('Starting unified scheduler + algo program')
 
-    schedule.every().minute.at(':10').do(scheduler, BET_SIZE)
+    schedule.every().minute.at(':40').do(scheduler, BET_SIZE)
 
     try:
         while True:

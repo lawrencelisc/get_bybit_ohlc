@@ -1,6 +1,7 @@
 import os
 import gc
 import ast
+import sys
 import json
 import pytz
 import requests
@@ -32,12 +33,13 @@ class DataCenterSrv:
         try:
             bybit_cfg = DataSourceConfig()
             bybit_api = bybit_cfg.load_bybit_api_config(symbol)
-            self.bybit = ccxt.bybit({
-                'apiKey': bybit_api[symbol + '_1M_API_KEY'],
-                'secret': bybit_api[symbol + '_1M_SECRET_KEY'],
-                'enableRateLimit': True,
-                'options': {'default': 'swap'},
-            })
+            self.bybit = ccxt.bybit()
+            # self.bybit = ccxt.bybit({
+            #     'apiKey': bybit_api[symbol + '_1M_API_KEY'],
+            #     'secret': bybit_api[symbol + '_1M_SECRET_KEY'],
+            #     'enableRateLimit': True,
+            #     'options': {'default': 'swap'},
+            # })
             self.markets = self.bybit.load_markets()
         except Exception as e:
             logger.exception("Failed to load exchange info for %s: %s", symbol, e)
